@@ -27,6 +27,7 @@ class App:
 
             elif command == "add":
                 person = fill_new()
+
                 print("Need to do.")
             # elif command == "change":
             #     print("Need to do.")
@@ -48,7 +49,7 @@ class App:
         # TODO: save_data(book)
 
 
-def fill_new():
+def fill_new():  # TODO: move to separate method
     properties = ["name", "phone_number"]
 
     name = None
@@ -79,8 +80,6 @@ def fill_new():
     print('__________')
     print(name, phone_number)
     print('__________')
-
-
 
 
 def parse_input(user_input):
