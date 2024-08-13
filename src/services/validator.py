@@ -1,6 +1,9 @@
 import re
 from src.services.console_text_designer import ConsoleTextDesigner as console_des
 
+
+BIRTHDAY_FORMAT = "%Y-%m-%d"
+
 def email(email: str) -> bool:
     # TODO: add validation
     pass
@@ -27,6 +30,7 @@ def validate_user_name(user_name: str) -> bool:  # TODO: edit validation
 
 
 def birthday(birthday: str) -> bool:
-    # TODO: add validation
+
+    # TODO: add validation (use constant BIRTHDAY_FORMAT)
     # check the date that it is not older than today and not more than 100 years
     pass

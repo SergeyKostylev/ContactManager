@@ -1,6 +1,6 @@
 from src.models.address_book import AddressBook
+from src.services.console_models_filler import fill_new_book_record
 from src.services.console_text_designer import ConsoleTextDesigner
-from src.services.validator import validate_user_name, validate_phone_number
 
 
 class App:
@@ -10,6 +10,7 @@ class App:
 
     def run(self):
         book = AddressBook()  # TODO create separate method for load_data()
+
 
         self.__designer.print_info("Welcome to the assistant bot!")
 
@@ -26,7 +27,7 @@ class App:
                 print("How can I help you?")
 
             elif command == "add":
-                person = fill_new()
+                person = fill_new_book_record()
 
                 print("Need to do.")
             # elif command == "change":
@@ -47,40 +48,6 @@ class App:
             print(output)
 
         # TODO: save_data(book)
-
-
-def fill_new():  # TODO: move to separate method
-    properties = ["name", "phone_number"]
-
-    name = None
-    phone_number = None
-
-    while True:
-        if len(properties) == 0:
-            break
-
-        prop = properties[0]
-
-        if prop == "name":
-            input_name = input("print name: ")
-            if not validate_user_name(input_name):  # is not valid
-                print("name is not valid")
-                continue
-            name = input_name
-
-        if prop == "phone_number":
-            input_phone = input("print phone: ")
-            if not validate_phone_number(input_phone):
-                print("phone is not valid")
-                continue
-            phone_number = input_phone
-
-        properties.pop(0)
-
-    print('__________')
-    print(name, phone_number)
-    print('__________')
-
 
 def parse_input(user_input):
     cmd, *args = user_input.split()
