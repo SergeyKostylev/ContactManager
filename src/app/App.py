@@ -10,8 +10,6 @@ class App:
 
     def run(self):
         book = AddressBook()  # TODO create separate method for load_data()
-
-
         self.__designer.print_info("Welcome to the assistant bot!")
 
 
@@ -30,12 +28,14 @@ class App:
                 person = fill_new_book_record()
 
                 print("Need to do.")
-            # elif command == "change":
-            #     print("Need to do.")
-            # elif command == "phone":
-            #     print("Need to do.")
-            # elif command == "all":
-            #     print("Need to do.")
+            elif command == "change_phone":
+                print("Need to do.")
+            elif command == "add_phone":
+                print("Need to do.")
+            elif command == "delete_phone":
+                print("Need to do.")
+            elif command == "show_all":
+                print("Need to do.")
             # elif command == "add-birthday":
             #     print("Need to do.")
             # elif command == "show-birthday":
