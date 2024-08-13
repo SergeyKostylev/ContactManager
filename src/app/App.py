@@ -5,17 +5,17 @@ from src.services.validator import validate_user_name, validate_phone_number
 
 class App:
     def __init__(self):
-        # TODO init properties ???
+        self.__designer = ConsoleTextDesigner()
         pass
 
     def run(self):
         book = AddressBook()  # TODO create separate method for load_data()
-        console_text_designer = ConsoleTextDesigner()
 
-        console_text_designer.print_info("Welcome to the assistant bot!")
+        self.__designer.print_info("Welcome to the assistant bot!")
+
 
         while True:
-            user_input = input("Enter a command: ")
+            user_input = self.__designer.print_input("Enter a command: ")
             command, *args = parse_input(user_input)
             output = ''
 
