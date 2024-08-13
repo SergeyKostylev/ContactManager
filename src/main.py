@@ -1,2 +1,4 @@
+from src.app.App import App
 
-print(123)
+if __name__ == '__main__':
+    App().run()
