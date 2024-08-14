@@ -23,13 +23,6 @@ def validate_user_name(user_name: str) -> bool:
 
 
 def validate_birthday(birthday: str) -> bool:
-    # DD.MM.YYYY
-    birthday_regex = r"^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$"
-    
-  
-    if not re.match(birthday_regex, birthday):
-        return False
-    
     try:
         
         birthday_date = datetime.strptime(birthday, '%d.%m.%Y')
