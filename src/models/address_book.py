@@ -33,6 +33,7 @@ class AddressBook(UserDict):
             return True
         return False
     
+    
     def update_record(self, name: str, new_record: BookRecord) -> bool:
         """Update an existing record."""
         if name in self.data:

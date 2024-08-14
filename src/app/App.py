@@ -36,6 +36,15 @@ class App:
                 print("Need to do.")
             elif command == "show_all":
                 print("Need to do.")
+            # elif command == "add-note":
+            #     print(add_note(args, notebook))
+
+            # elif command == "find-note":
+            #     print(find_note(args, notebook))
+
+            # elif command == "delete-note":
+            #     print(delete_note(args, notebook))
+
             # elif command == "add-birthday":
             #     print("Need to do.")
             # elif command == "show-birthday":
