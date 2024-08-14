@@ -1,36 +1,27 @@
 import re
 from src.services.console_text_designer import ConsoleTextDesigner as console_des
 
-
-BIRTHDAY_FORMAT = "%Y-%m-%d"
-
 def email(email: str) -> bool:
-    # TODO: add validation
-    pass
+    email_regex = r"(^[\w\.-]+@[\w\.-]+\.\w+$)"
+    return re.match(email_regex, email) is not None
 
 
 def address(address: str) -> bool:
-    # TODO: add validation
-    pass
-
+    address_regex = r"^[\w\s\.,#-]+$"
+    return re.match(address_regex, address) is not None
 
 
 def validate_phone_number(phone_number: str) -> bool:
-    if not re.fullmatch(r'^\d{3}$', phone_number):  # TODO 3 -> 10
-        console_des.print_warning('ERROR') # TODO describe error message
-        return False
-    return True
+    phone_regex = r"^\d{10}$"
+    return re.match(phone_regex, phone_number) is not None
 
 
-def validate_user_name(user_name: str) -> bool:  # TODO: edit validation
-    if len(user_name) < 3:
-        return False
-
-    return True
+def validate_user_name(user_name: str) -> bool: 
+    username_regex = r"^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:['\-\s][A-Za-zÀ-ÖØ-öø-ÿ]+)*$"
+    return re.match(username_regex, user_name) is not None
 
 
 def birthday(birthday: str) -> bool:
-
-    # TODO: add validation (use constant BIRTHDAY_FORMAT)
-    # check the date that it is not older than today and not more than 100 years
-    pass
+    birthday_regex = r"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$"
+    if not re.match(birthday_regex, birthday):
+        return False
