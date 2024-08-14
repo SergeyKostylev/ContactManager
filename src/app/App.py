@@ -1,6 +1,6 @@
 from src.models.address_book import AddressBook
 from src.services.console_models_filler import fill_new_book_record
-from src.services.console_text_designer import ConsoleTextDesigner
+from src.services.pretty_output import ConsoleTextDesigner
 
 
 class App:
@@ -14,7 +14,7 @@ class App:
 
 
         while True:
-            user_input = self.__designer.print_input("Enter a command: ")
+            user_input = self.__designer.print_info("Enter a command: ")
             command, *args = parse_input(user_input)
             output = ''
 
@@ -22,7 +22,7 @@ class App:
                 print("Good bye!")
                 break
             elif command == "hello":
-                print("How can I help you?")
+                self.__designer.print_info("How can I help you?")
 
             elif command == "add":
                 person = fill_new_book_record()

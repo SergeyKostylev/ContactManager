@@ -1,5 +1,5 @@
 from src.services.validator import validate_user_name, validate_phone_number
-from src.services.console_text_designer import ConsoleTextDesigner as designer
+from src.services.pretty_output import ConsoleTextDesigner as designer
 
 
 EMPTY_FIELD_COMMAND = 'n'
@@ -52,7 +52,7 @@ def fill_new_book_record():
     print('__________')
 
 def test_call_back(input_message: str, validate_function, wrong_message):
-    input_value = designer().print_input(input_message)
+    input_value = designer().print_info(input_message)
     if not validate_function(input_value):
         designer().print_warning(wrong_message)
         return False
