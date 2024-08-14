@@ -1,5 +1,6 @@
 from src.models.address_book import AddressBook
-from src.services.console_models_filler import fill_new_book_record
+from src.services.console_models_filler import fill_new_book_record, EMPTY_FIELD_COMMAND, CANCEL_FILLING_COMMAND, \
+    fill_phone_number, fill_user_name, fill_address, fill_email, fill_birthdate
 from src.services.pretty_output import ConsoleTextDesigner
 
 
@@ -9,33 +10,59 @@ class App:
         pass
 
     def run(self):
-        book = AddressBook()  # TODO create separate method for load_data()
+        book = AddressBook()
+        book.load_data()
         self.__designer.print_info("Welcome to the assistant bot!")
 
-
         while True:
-            user_input = self.__designer.print_info("Enter a command: ")
-            command, *args = parse_input(user_input)
+            command = self.__designer.print_input("Enter a command: ")
             output = ''
-
             if command in ["close", "exit"]:
-                print("Good bye!")
+                self.__designer.print_info("Good bye!")
                 break
             elif command == "hello":
                 self.__designer.print_info("How can I help you?")
-
             elif command == "add":
+                self.command_control_tip()
                 person = fill_new_book_record()
-
-                print("Need to do.")
-            elif command == "change_phone":
-                print("Need to do.")
+                book.add_new_record(person)
             elif command == "add_phone":
-                print("Need to do.")
+                name = fill_user_name()
+                phone = fill_phone_number()
+                book.add_new_phone(name, phone)
+            elif command == "change_phone":
+                name = fill_user_name()
+                phone_old = fill_phone_number()
+                phone_new = fill_phone_number()
+                book.change_phone(name, phone_old, phone_new)
             elif command == "delete_phone":
-                print("Need to do.")
+                name = fill_user_name()
+                phone_to_delete = fill_phone_number()
+                book.delete_phone(name, phone_to_delete)
+            elif command == "update_address":
+                name = fill_user_name()
+                address = fill_address()
+                book.update_address(name, address)
+            elif command == "update_email":
+                name = fill_user_name()
+                email = fill_email()
+                book.update_email(name, email)
+            elif command == "add_birthday":
+                name = fill_user_name()
+                birthdate = fill_birthdate()
+                book.add_birthday(name, birthdate)
+            elif command == "show_upcoming_birthday":
+                # book.get_upcoming_birthdays() TODO !!!!!!!
+                pass
             elif command == "show_all":
-                print("Need to do.")
+                # book.get_all() TODO !!!!!!!
+                pass
+            elif command == "show_by_name":
+                # book.get_by_name() TODO !!!!!!!
+                pass
+            elif command == "show_by_part_name":
+                # book.get_by_part_name() TODO !!!!!!!
+                pass
             # elif command == "add-note":
             #     print(add_note(args, notebook))
 
@@ -52,13 +79,13 @@ class App:
             # elif command == "birthdays":
             #     print("Need to do.")
             else:
-                print("Invalid command.")
+                self.__designer.print_error("Invalid command.")
 
-            print(output)
+            self.__designer.print_info(output)
 
-        # TODO: save_data(book)
+        book.save_data()
 
-def parse_input(user_input):
-    cmd, *args = user_input.split()
-    cmd = cmd.strip().lower()
-    return cmd, *args
+
+
+    def command_control_tip(self):
+        self.__designer.print_info(f"Use '{EMPTY_FIELD_COMMAND}' for skip property and '{CANCEL_FILLING_COMMAND}' to cancel command")
