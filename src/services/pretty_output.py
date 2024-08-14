@@ -1,5 +1,6 @@
 from rich.console import Console
 from rich.table import Table
+from rich.prompt import Prompt
 
 
 class ConsoleTextDesigner:
@@ -28,6 +29,10 @@ class ConsoleTextDesigner:
 
     def __init__(self):
         self.console = Console()
+
+    def print_input(self, input_text):
+        self.console.print(input_text, style='blue', end='')
+        return Prompt.ask()
 
     def print_with_color(self, message: str, color: str):
         self.console.print(message, style=color)
