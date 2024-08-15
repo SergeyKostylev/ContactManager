@@ -52,17 +52,21 @@ class App:
                 birthdate = fill_birthdate()
                 book.add_birthday(name, birthdate)
             elif command == "show_upcoming_birthday":
-                # book.get_upcoming_birthdays() TODO !!!!!!!
-                pass
+                days = self.__designer.print_input("write days amount") # TODO edit "write days amount" to something better
+                # days_as_int = convert and validate input_days
+                # book.get_upcoming_birthdays(days_as_int) TODO !!!!!!!
             elif command == "all":
                 records = list(book.get_all()) # TODO !!!!!!!
-                self.__designer.print_table(records)
+                # self.__designer.print_table(records)
             elif command == "show_by_name":
-                # book.get_by_name() TODO !!!!!!!
+                name = fill_user_name()
+                # book.get_by_name(name) TODO !!!!!!!
+                # self.__designer.print_table(records)
                 pass
             elif command == "show_by_part_name":
-                # book.get_by_part_name() TODO !!!!!!!
-                pass
+                part_name = self.__designer.print_input("write part of name")  # TODO edit "write days amount" to something better
+                # book.get_by_part_name(part_name) TODO !!!!!!!
+                self.__designer.print_table(records)
             # elif command == "add-note":
             #     print(add_note(args, notebook))
 
