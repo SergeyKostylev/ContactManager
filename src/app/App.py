@@ -2,7 +2,9 @@ from src.models.address_book import AddressBook
 from src.services.console_models_filler import fill_new_book_record, EMPTY_FIELD_COMMAND, CANCEL_FILLING_COMMAND, \
     fill_phone_number, fill_user_name, fill_address, fill_email, fill_birthdate
 from src.services.pretty_output import ConsoleTextDesigner
-
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.styles import Style
 
 class App:
     def __init__(self):
@@ -12,10 +14,16 @@ class App:
     def run(self):
         book = AddressBook()
         book.load_data()
+        commands = ["close","exit","hello","add","add_phone","change_phone","delete_phone",
+                    "update_address","update_email","add_birthday","show_upcoming_birthday",
+                    "all","show_by_name","show_by_part_name","birthdays"]
+        command_completer = WordCompleter(commands)
+        session = PromptSession(completer=command_completer)
+        style = Style.from_dict({'prompt': 'ansiblue'})
         self.__designer.print_info("Welcome to the assistant bot!")
 
         while True:
-            command = self.__designer.print_input("Enter a command: ")
+            command = session.prompt('Enter a command: ', style = style)
             output = ''
             if command in ["close", "exit"]:
                 self.__designer.print_info("Good bye!")
