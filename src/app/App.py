@@ -14,6 +14,7 @@ class App:
     def run(self):
         book = AddressBook()
         book.load_data()
+
         commands = ["close","exit","hello","add","add_phone","change_phone","delete_phone",
                     "update_address","update_email","add_birthday","show_upcoming_birthday",
                     "all","show_by_name","show_by_part_name","birthdays"]
@@ -60,21 +61,24 @@ class App:
                 birthdate = fill_birthdate()
                 book.add_birthday(name, birthdate)
             elif command == "show_upcoming_birthday":
-                days = self.__designer.print_input("write days amount") # TODO edit "write days amount" to something better
-                # days_as_int = convert and validate input_days
-                # book.get_upcoming_birthdays(days_as_int) TODO !!!!!!!
+                days = self.__designer.print_input("Enter the number of days: ")
+                days_as_int = int(days)
+                records = book.get_upcoming_birthdays(days_as_int)
+                self.__designer.print_table(self.convert_records_to_dicts(records))
             elif command == "all":
-                records = list(book.get_all()) # TODO !!!!!!!
-                # self.__designer.print_table(records)
+                records = list(book.get_all())
+                self.__designer.print_table(self.convert_records_to_dicts(records))
             elif command == "show_by_name":
                 name = fill_user_name()
-                # book.get_by_name(name) TODO !!!!!!!
-                # self.__designer.print_table(records)
-                pass
+                record = book.get_by_name(name)
+                if record:
+                    self.__designer.print_table(self.convert_records_to_dicts([record]))
+                else:
+                    self.__designer.print_info("No record found.")
             elif command == "show_by_part_name":
-                part_name = self.__designer.print_input("write part of name")  # TODO edit "write days amount" to something better
-                # book.get_by_part_name(part_name) TODO !!!!!!!
-                self.__designer.print_table(records)
+                part_name = self.__designer.print_input("Enter part of the name: ")
+                records = book.get_by_part_name(part_name)
+                self.__designer.print_table(self.convert_records_to_dicts(records))
             # elif command == "add-note":
             #     print(add_note(args, notebook))
 
@@ -101,3 +105,7 @@ class App:
 
     def command_control_tip(self):
         self.__designer.print_info(f"Use '{EMPTY_FIELD_COMMAND}' for skip property and '{CANCEL_FILLING_COMMAND}' to cancel command")
+
+    @staticmethod
+    def convert_records_to_dicts(records):
+        return [record.to_dict() for record in records]

@@ -51,8 +51,9 @@ class AddressBook(UserDict):
         today = datetime.now().date()
         upcoming_birthdays = []
         for record in self.data.values():
-            if record.birthday:
-                next_birthday = record.birthday.replace(year=today.year)
+            if record.birth_date:
+                birth_date = datetime.strptime(record.birth_date, "%d.%m.%Y").date()
+                next_birthday = birth_date.replace(year=today.year)
                 if next_birthday < today:
                     next_birthday = next_birthday.replace(year=today.year + 1)
                 if 0 <= (next_birthday - today).days <= days:

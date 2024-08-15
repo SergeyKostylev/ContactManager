@@ -51,7 +51,7 @@ class ConsoleTextDesigner:
 
 
     def print_table(self, list_of_dict_to_display, displayed_columns=None):
-        table = Table(show_header=True, header_style="bold magenta")
+        table = Table(show_header=True, header_style="bold magenta", title_justify="center")
 
         if not list_of_dict_to_display:
             self.console.print("No data to display", style="bold red")
