@@ -54,9 +54,9 @@ class App:
             elif command == "show_upcoming_birthday":
                 # book.get_upcoming_birthdays() TODO !!!!!!!
                 pass
-            elif command == "show_all":
-                # book.get_all() TODO !!!!!!!
-                pass
+            elif command == "all":
+                records = list(book.get_all()) # TODO !!!!!!!
+                self.__designer.print_table(records)
             elif command == "show_by_name":
                 # book.get_by_name() TODO !!!!!!!
                 pass
