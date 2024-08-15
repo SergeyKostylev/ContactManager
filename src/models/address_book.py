@@ -65,9 +65,9 @@ class AddressBook(UserDict):
         record = self.get_by_name(name)
         if not record:
             raise ValidateException(f"Record with name '{name}' does not exist.")
-        if phone_number in record.phones: 
+        if phone_number in record.phone_numbers:
             raise ValidateException(f"Phone number '{phone_number}' already exist for name '{name}'.")
-        record.phones.append(phone_number)
+        record.phone_numbers.append(phone_number)
         return True
 
     @input_error
@@ -76,10 +76,10 @@ class AddressBook(UserDict):
         record = self.get_by_name(name)
         if not record:
             raise ValidateException(f"Record with name '{name}' does not exist.")
-        if old_phone_number not in record.phones:
+        if old_phone_number not in record.phone_numbers:
             raise ValidateException(f"Phone number '{old_phone_number}' does not exist for '{name}'.")
-        record.phones.remove(old_phone_number)
-        record.phones.append(new_phone_number)
+        record.phone_numbers.remove(old_phone_number)
+        record.phone_numbers.append(new_phone_number)
         return True
 
     @input_error
@@ -88,9 +88,9 @@ class AddressBook(UserDict):
         record = self.get_by_name(name)
         if not record:
             raise ValidateException(f"Record with name '{name}' does not exist.")
-        if phone_to_delete not in record.phones:
+        if phone_to_delete not in record.phone_numbers:
             raise ValidateException(f"Phone number '{phone_to_delete}' does not exist for '{name}'.")
-        record.phones.remove(phone_to_delete)
+        record.phone_numbers.remove(phone_to_delete)
         return True
 
     @input_error

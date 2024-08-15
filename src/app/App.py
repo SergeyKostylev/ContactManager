@@ -44,34 +44,34 @@ class App:
                     self.command_control_tip()
                     name = fill_user_name()
                     phone = fill_phone_number()
-                    book.add_new_phone(name, phone)
-                    output = f"Phone {phone} was added for {name} user."
+                    if book.add_new_phone(name, phone):
+                        output = f"Phone {phone} was added for {name} user."
                 elif command == "change_phone":
                     name = fill_user_name()
                     phone_old = fill_phone_number()
                     phone_new = fill_phone_number()
-                    book.change_phone(name, phone_old, phone_new)
-                    output = f"Phone {phone_old} was changed to {phone_new} for {name} user."
+                    if book.change_phone(name, phone_old, phone_new):
+                        output = f"Phone {phone_old} was changed to {phone_new} for {name} user."
                 elif command == "delete_phone":
                     name = fill_user_name()
                     phone_to_delete = fill_phone_number()
-                    book.delete_phone(name, phone_to_delete)
-                    output = "Phone was removed."
+                    if book.delete_phone(name, phone_to_delete):
+                        output = "Phone was removed."
                 elif command == "update_address":
                     name = fill_user_name()
                     address = fill_address()
-                    book.update_address(name, address)
-                    output = "Address was updated."
+                    if book.update_address(name, address):
+                        output = "Address was updated."
                 elif command == "update_email":
                     name = fill_user_name()
                     email = fill_email()
-                    book.update_email(name, email)
-                    output = "Email was updated."
+                    if book.update_email(name, email):
+                        output = "Email was updated."
                 elif command == "add_birthday":
                     name = fill_user_name()
                     birthdate = fill_birthdate()
-                    book.add_birthday(name, birthdate)
-                    output = "Birthday was added."
+                    if book.add_birthday(name, birthdate):
+                        output = "Birthday was added."
                 elif command == "show_upcoming_birthday":
                     days = self.__designer.print_input("Enter the number of days: ")
                     days_as_int = int(days)
