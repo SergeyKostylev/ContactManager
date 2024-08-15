@@ -62,15 +62,9 @@ class App:
                 book.add_birthday(name, birthdate)
             elif command == "show_upcoming_birthday":
                 days = self.__designer.print_input("Enter the number of days: ")
-                try:
-                    days_as_int = int(days)
-                    records = book.get_upcoming_birthdays(days_as_int)
-                    self.__designer.print_table(self.convert_records_to_dicts(records))
-                except ValueError:
-                    self.__designer.print_error("Invalid number of days.")
-                # days = self.__designer.print_input("write days amount")
-                # days_as_int = convert and validate input_days
-                # book.get_upcoming_birthdays(days_as_int) TODO !!!!!!!
+                days_as_int = int(days)
+                records = book.get_upcoming_birthdays(days_as_int)
+                self.__designer.print_table(self.convert_records_to_dicts(records))
             elif command == "all":
                 records = list(book.get_all())
                 self.__designer.print_table(self.convert_records_to_dicts(records))
