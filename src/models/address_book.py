@@ -37,12 +37,11 @@ class AddressBook(UserDict):
             return True
         return False
     
-    # TODO: wrong logic need to remove this method
-    # Example if old name was AAA and new_record has nam BBB we save in the book wrong info {"AAA": <record with name BBB>}
     def update_record(self, name: str, new_record: BookRecord) -> bool:
         """Update an existing record."""
         if name in self.data:
-            self.data[name] = new_record
+            self.data.pop(name)
+            self.data[new_record.name] = new_record
             return True
         return False
     
@@ -61,43 +60,68 @@ class AddressBook(UserDict):
 
     @input_error
     def add_new_phone(self, name: str, phone_number: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  if exist passed number in person not need to add twice
-        pass
+        """Add new phone number to contact."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        if phone_number in record.phones: 
+            raise ValidateException(f"Phone number '{phone_number}' already exist for name '{name}'.")
+        record.phones.append(phone_number)
+        return True
 
     @input_error
     def change_phone(self, name: str, old_phone_number: str, new_phone_number: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  if passed number does not exist  raise ValidateException()
-        # ...
-        pass
+        """Change an existing phone number to a new one."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        if old_phone_number not in record.phones:
+            raise ValidateException(f"Phone number '{old_phone_number}' does not exist for '{name}'.")
+        record.phones.remove(old_phone_number)
+        record.phones.append(new_phone_number)
+        return True
 
     @input_error
     def delete_phone(self, name: str, phone_to_delete: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  if passed number does not exist  raise ValidateException()
-        # ...
-        pass
+        """Delete a phone number from a contact."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        if phone_to_delete not in record.phones:
+            raise ValidateException(f"Phone number '{phone_to_delete}' does not exist for '{name}'.")
+        record.phones.remove(phone_to_delete)
+        return True
 
     @input_error
     def update_address(self, name: str, new_address: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  set new address
-        # ...
-        pass
+        """Update the address of a contact."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        record.address = new_address
+        return True
 
     @input_error
     def update_email(self, name: str, email: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  set new email
-        # ...
-        pass
+        """Update the email of a contact."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        record.email = email
+        return True
 
     def add_birthday(self, name: str, birthday: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  if birthday already set  raise ValidateException()
-        # ...
-        pass
+        """Add a birthday to a contact."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        if record.birthday:
+            raise ValidateException(f"Birthday already set for '{name}'.")
+        try:
+            record.birthday = datetime.strptime(birthday, "%d.%m.%Y").date()
+        except ValueError:
+            raise ValidateException(f"Invalid date format for '{birthday}'. Use DD.MM.YYYY.")
+        return True
 
     def load_data(self, filename="addressbook.pkl"):
         """Load address book data from a file."""
