@@ -22,7 +22,7 @@ class App:
         commands = ["close","exit","hello","add","add_phone","change_phone","delete_phone",
                     "update_address","update_email","add_birthday","show_upcoming_birthday",
                     "all","show_by_name","show_by_part_name","birthdays",
-                    "all_notes", "add_note", "find_note_by_tag", "delete_note"]
+                    "all_notes", "add_note", "find_note_by_tag", "delete_note", "remove_contact"]
         command_completer = WordCompleter(commands)
         session = PromptSession(completer=command_completer)
         style = Style.from_dict({'prompt': 'ansiblue'})
@@ -45,6 +45,10 @@ class App:
                         continue
                     self.book.add_new_record(person)
                     output = f"{person.name} was added to the book."
+                elif command == "remove_contact":
+                    name = fill_user_name()
+                    if self.book.delete(name):
+                        output = "Contact was removed."
                 elif command == "add_phone":
                     self.command_control_tip()
                     name = fill_user_name()
