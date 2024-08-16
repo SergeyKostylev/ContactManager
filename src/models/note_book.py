@@ -1,6 +1,18 @@
 from collections import UserDict
+from typing import Any
+
+from src.services import storage_manager
+
 
 class Notebook(UserDict):
+    def __init__(self, __dict: None = None):
+        super().__init__(__dict)
+        self.STORAGE_FILE_NAME = "notebook.pkl"
+
+    def get_all(self):
+        """Get all records in dictionary format."""
+        return self.data.values()
+
     def add_note(self, note):
         note_id = len(self.data) + 1
         self.data[note_id] = note
@@ -21,6 +33,12 @@ class Notebook(UserDict):
         if note_id in self.data:
             del self.data[note_id]
 
+    def load_data(self):
+        storage_manager.load(self, self.STORAGE_FILE_NAME)
+
+    def save_data(self):
+        storage_manager.save(self.data, self.STORAGE_FILE_NAME)
+
 
 class Note:
     def __init__(self, content, tags=None):
@@ -34,6 +52,12 @@ class Note:
     def __str__(self):
         tags_str = ", ".join(self.tags)
         return f"Note: {self.content}, Tags: {tags_str}"
+
+    def to_dict(self):
+        return {
+            "content": self.content,
+            "tags": ", ".join(self.tags),
+        }
 
     
 def add_note(args, notebook: Notebook):
