@@ -4,11 +4,13 @@ from src.exeptions.exceptions import ValidateException
 from src.models.book_record import BookRecord
 from datetime import datetime
 import pickle
+from src.services import storage_manager
 
 from src.services.error_handler import input_error
 
 
 class AddressBook(UserDict):
+    STORAGE_FILE_NAME = "addressbook.pkl"
 
     def get_all(self) -> dict[BookRecord, BookRecord]:
         """Get all records in dictionary format."""
@@ -30,29 +32,31 @@ class AddressBook(UserDict):
         self.data[book_record.name] = book_record
         return True
 
+    @input_error
     def delete(self, name: str) -> bool:
         """Delete a record by name."""
-        if name in self.data:
-            self.data.pop(name)
-            return True
-        return False
-    
-    # TODO: wrong logic need to remove this method
-    # Example if old name was AAA and new_record has nam BBB we save in the book wrong info {"AAA": <record with name BBB>}
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        self.data.pop(name)
+        return True
+
     def update_record(self, name: str, new_record: BookRecord) -> bool:
         """Update an existing record."""
         if name in self.data:
-            self.data[name] = new_record
+            self.data.pop(name)
+            self.data[new_record.name] = new_record
             return True
         return False
-    
+
     def get_upcoming_birthdays(self, days: int) -> list[BookRecord]:
         """Method to get upcoming birthdays"""
         today = datetime.now().date()
         upcoming_birthdays = []
         for record in self.data.values():
-            if record.birthday:
-                next_birthday = record.birthday.replace(year=today.year)
+            if record.birth_date:
+                birth_date = datetime.strptime(record.birth_date, "%d.%m.%Y").date()
+                next_birthday = birth_date.replace(year=today.year)
                 if next_birthday < today:
                     next_birthday = next_birthday.replace(year=today.year + 1)
                 if 0 <= (next_birthday - today).days <= days:
@@ -61,53 +65,70 @@ class AddressBook(UserDict):
 
     @input_error
     def add_new_phone(self, name: str, phone_number: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  if exist passed number in person not need to add twice
-        pass
+        """Add new phone number to contact."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        if phone_number in record.phone_numbers:
+            raise ValidateException(f"Phone number '{phone_number}' already exist for name '{name}'.")
+        record.phone_numbers.append(phone_number)
+        return True
 
     @input_error
     def change_phone(self, name: str, old_phone_number: str, new_phone_number: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  if passed number does not exist  raise ValidateException()
-        # ...
-        pass
+        """Change an existing phone number to a new one."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        if old_phone_number not in record.phone_numbers:
+            raise ValidateException(f"Phone number '{old_phone_number}' does not exist for '{name}'.")
+        record.phone_numbers.remove(old_phone_number)
+        record.phone_numbers.append(new_phone_number)
+        return True
 
     @input_error
     def delete_phone(self, name: str, phone_to_delete: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  if passed number does not exist  raise ValidateException()
-        # ...
-        pass
+        """Delete a phone number from a contact."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        if phone_to_delete not in record.phone_numbers:
+            raise ValidateException(f"Phone number '{phone_to_delete}' does not exist for '{name}'.")
+        record.phone_numbers.remove(phone_to_delete)
+        return True
 
     @input_error
     def update_address(self, name: str, new_address: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  set new address
-        # ...
-        pass
+        """Update the address of a contact."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        record.address = new_address
+        return True
 
     @input_error
     def update_email(self, name: str, email: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  set new email
-        # ...
-        pass
+        """Update the email of a contact."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        record.email = email
+        return True
 
     def add_birthday(self, name: str, birthday: str) -> bool:
-        # TODO: search record by name. if name does not exist  raise ValidateException()
-        #  if birthday already set  raise ValidateException()
-        # ...
-        pass
+        """Add a birthday to a contact."""
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        if record.birth_date:
+            raise ValidateException(f"Birthday already set for '{name}'.")
+        record.birth_date = birthday
+        return True
 
-    def load_data(self, filename="addressbook.pkl"):
+    def load_data(self):
         """Load address book data from a file."""
-        try:
-            with open(filename, "rb") as file:
-                self.data = pickle.load(file)
-        except FileNotFoundError:
-            self.data = {}
+        storage_manager.load(self, self.STORAGE_FILE_NAME)
 
-    def save_data(self, filename="addressbook.pkl"):
+    def save_data(self):
         """Save address book data to a file."""
-        with open (filename, "wb") as file:
-            pickle.dump(self.data, file)
+        storage_manager.save(self.data, self.STORAGE_FILE_NAME)
