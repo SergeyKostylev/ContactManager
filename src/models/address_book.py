@@ -32,12 +32,14 @@ class AddressBook(UserDict):
         self.data[book_record.name] = book_record
         return True
 
+    @input_error
     def delete(self, name: str) -> bool:
         """Delete a record by name."""
-        if name in self.data:
-            self.data.pop(name)
-            return True
-        return False
+        record = self.get_by_name(name)
+        if not record:
+            raise ValidateException(f"Record with name '{name}' does not exist.")
+        self.data.pop(name)
+        return True
 
     def update_record(self, name: str, new_record: BookRecord) -> bool:
         """Update an existing record."""
