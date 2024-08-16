@@ -22,6 +22,22 @@ def validate_user_name(user_name: str) -> bool:
     username_regex = r"^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:['\-\s][A-Za-zÀ-ÖØ-öø-ÿ]+)*$"
     return re.match(username_regex, user_name) is not None
 
+def validate_note_title(title: str) -> bool:
+    length = len(title.strip())
+    return length >= 3 and length <=10
+
+def validate_note_content(content: str) -> bool:
+    length = len(content.strip())
+    return length >= 5 and length <=20
+
+
+def validate_strings_with_tags(strings_with_tags: str):
+    # Method receives raw string with tags. Example: "tag1 tag2 tag3". Must be separated by space.
+    length = len(strings_with_tags.strip())
+    return length > 0
+
+
+
 
 def validate_shift_days(shift_days: str) -> bool:
     reg = r"^\d+$"

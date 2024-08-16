@@ -2,7 +2,7 @@ from src.exeptions.exceptions import CancelInputCommandException
 from src.models.address_book import AddressBook
 from src.models.note_book import Note, Notebook
 from src.services.console_models_filler import fill_new_book_record, EMPTY_FIELD_COMMAND, CANCEL_FILLING_COMMAND, \
-    fill_phone_number, fill_user_name, fill_address, fill_email, fill_birthdate, fill_days
+    fill_phone_number, fill_user_name, fill_address, fill_email, fill_birthdate, fill_days, fill_note, fill_title, fill_content, fill_tags
 from src.services.pretty_output import ConsoleTextDesigner
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
@@ -22,7 +22,7 @@ class App:
         commands = ["close","exit","hello","add","add_phone","change_phone","delete_phone",
                     "update_address","update_email","add_birthday","show_upcoming_birthday",
                     "all","show_by_name","show_by_part_name","birthdays",
-                    "all_notes", "add_note", "find_note_by_tag", "delete_note", "remove_contact"]
+                    "all_notes", "add_note", "find_note_by_tag", "delete_note", "remove_contact", "change_content_by_title"]
         command_completer = WordCompleter(commands)
         session = PromptSession(completer=command_completer)
         style = Style.from_dict({'prompt': 'ansiblue'})
@@ -103,27 +103,36 @@ class App:
                     records = self.book.get_by_part_name(part_name)
                     self.__designer.print_table(self.convert_records_to_dicts(records))
                 elif command == "add_note":
-                    content = self.__designer.print_input("Enter the note content: ")
-                    tags = self.__designer.print_input("Enter tags (comma separated): ").split(",")
-                    note = Note(content, tags)
+                    self.command_control_tip()
+                    note = fill_note()
+                    if note is None:
+                        continue
                     self.notebook.add_note(note)
-                    output = "Note added."
+                    output = "Note was added."   
                 elif command == "all_notes":
                     notes = self.notebook.get_all()
                     self.__designer.print_table(self.convert_records_to_dicts(notes))
                 elif command == "find_note_by_tag":
-                    tag = self.__designer.print_input("Enter the tag to find: ")
-                    notes = self.notebook.find_note_by_tag(tag)
-                    if notes:
-                        self.__designer.print_table(
-                            [{"content": note.content, "tags": ", ".join(note.tags)} for note in notes])
-                    else:
-                        self.__designer.print_info("No notes found with the given tag.")
+                    self.command_control_tip()
+                    self.__designer.print_info("Type a few tags that u want to search")
+                    tags_to_search = fill_tags()
+                    notes = self.notebook.find_note_by_tags(tags_to_search)
+                    self.__designer.print_table(self.convert_records_to_dicts(notes))
+                elif command == "find_note_by_keywords":
+                    keyword = self.__designer.print_input("Type keyword: ")
+                    notes = self.notebook.find_note_by_keywords(keyword)
+                    self.__designer.print_table(self.convert_records_to_dicts(notes))
                 elif command == "delete_note":
-                    # note_id = self.__designer.print_input("Enter the note ID to delete: ")
-                    # self.notebook.delete(int(note_id))
-                    # output = "Note deleted."
-                    pass
+                    self.command_control_tip()
+                    title = fill_title()
+                    if self.notebook.delete_by_title(title):
+                        self.__designer.print_info("Title was deleted")
+                elif command == "change_content_by_title":
+                    self.command_control_tip()
+                    title = fill_title()
+                    content = fill_content()
+                    if self.notebook.change_content_by_title(title, content):
+                        self.__designer.print_info("Content was changed")   
                 else:
                     self.__designer.print_error("Invalid command.")
 
