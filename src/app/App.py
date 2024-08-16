@@ -23,6 +23,7 @@ class App:
         session = PromptSession(completer=command_completer)
         style = Style.from_dict({'prompt': 'ansiblue'})
         self.__designer.print_info("Welcome to the assistant bot!")
+        self.__designer.print_info("I’m your personal Contact Manager.\nI’ll help you easily create and manage contacts, including names, phone numbers and other details.\nYou can view, search, and edit contacts, add notes and tags.\nMain commands: help, add, change_phone, add_birthday, show_upcoming_birthday, all.")
 
         while True:
             try:
