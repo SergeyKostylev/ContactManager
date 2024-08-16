@@ -37,7 +37,7 @@ def fill_new_book_record():
                     raise ValidateException('User name cannot be empty.')
             case "phone_numbers":
                 phone_number = fill_phone_number()
-                phone_numbers = [] if phone_number is None else [phone_numbers]
+                phone_numbers = [] if phone_number is None else [phone_number]
             case "email":
                 email = fill_email()
             case "address":
