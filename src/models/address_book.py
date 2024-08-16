@@ -118,12 +118,9 @@ class AddressBook(UserDict):
         record = self.get_by_name(name)
         if not record:
             raise ValidateException(f"Record with name '{name}' does not exist.")
-        if record.birthday:
+        if record.birth_date:
             raise ValidateException(f"Birthday already set for '{name}'.")
-        try:
-            record.birthday = datetime.strptime(birthday, "%d.%m.%Y").date()
-        except ValueError:
-            raise ValidateException(f"Invalid date format for '{birthday}'. Use DD.MM.YYYY.")
+        record.birth_date = birthday
         return True
 
     def load_data(self):
