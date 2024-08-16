@@ -2,7 +2,7 @@ from src.exeptions.exceptions import CancelInputCommandException
 from src.models.address_book import AddressBook
 from src.models.note_book import Note, Notebook
 from src.services.console_models_filler import fill_new_book_record, EMPTY_FIELD_COMMAND, CANCEL_FILLING_COMMAND, \
-    fill_phone_number, fill_user_name, fill_address, fill_email, fill_birthdate
+    fill_phone_number, fill_user_name, fill_address, fill_email, fill_birthdate, fill_days
 from src.services.pretty_output import ConsoleTextDesigner
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
@@ -82,9 +82,8 @@ class App:
                     if self.book.add_birthday(name, birthdate):
                         output = "Birthday was added."
                 elif command == "show_upcoming_birthday":
-                    days = self.__designer.print_input("Enter the number of days: ")
-                    days_as_int = int(days)
-                    records = self.book.get_upcoming_birthdays(days_as_int)
+                    shift_days = fill_days()
+                    records = self.book.get_upcoming_birthdays(shift_days)
                     self.__designer.print_table(self.convert_records_to_dicts(records))
                 elif command == "all":
                     records = list(self.book.get_all())
