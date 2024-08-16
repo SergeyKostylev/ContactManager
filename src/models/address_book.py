@@ -4,11 +4,13 @@ from src.exeptions.exceptions import ValidateException
 from src.models.book_record import BookRecord
 from datetime import datetime
 import pickle
+from src.services import storage_manager
 
 from src.services.error_handler import input_error
 
 
 class AddressBook(UserDict):
+    STORAGE_FILE_NAME = "addressbook.pkl"
 
     def get_all(self) -> dict[BookRecord, BookRecord]:
         """Get all records in dictionary format."""
@@ -36,7 +38,7 @@ class AddressBook(UserDict):
             self.data.pop(name)
             return True
         return False
-    
+
     def update_record(self, name: str, new_record: BookRecord) -> bool:
         """Update an existing record."""
         if name in self.data:
@@ -44,7 +46,7 @@ class AddressBook(UserDict):
             self.data[new_record.name] = new_record
             return True
         return False
-    
+
     def get_upcoming_birthdays(self, days: int) -> list[BookRecord]:
         """Method to get upcoming birthdays"""
         today = datetime.now().date()
@@ -124,15 +126,10 @@ class AddressBook(UserDict):
             raise ValidateException(f"Invalid date format for '{birthday}'. Use DD.MM.YYYY.")
         return True
 
-    def load_data(self, filename="addressbook.pkl"):
+    def load_data(self):
         """Load address book data from a file."""
-        try:
-            with open(filename, "rb") as file:
-                self.data = pickle.load(file)
-        except FileNotFoundError:
-            self.data = {}
+        storage_manager.load(self, self.STORAGE_FILE_NAME)
 
-    def save_data(self, filename="addressbook.pkl"):
+    def save_data(self):
         """Save address book data to a file."""
-        with open (filename, "wb") as file:
-            pickle.dump(self.data, file)
+        storage_manager.save(self.data, self.STORAGE_FILE_NAME)
