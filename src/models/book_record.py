@@ -51,7 +51,7 @@ class BookRecord:
     def to_dict(self):
         return {
             "name": self.name,
-            "phones": ", ".join(self.__phone_numbers),
+            "phones": self.__phone_numbers,
             "address": self.address,
             "birth_date": self.birth_date,
             "email": self.email,

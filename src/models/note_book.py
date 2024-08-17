@@ -22,7 +22,7 @@ class Note:
         return {
             "title": self.title,
             "content": self.content,
-            "tags": ", ".join(self.tags)
+            "tags": self.tags
         }
 
 
@@ -38,7 +38,7 @@ class Notebook(UserDict):
     def add_note(self, note: Note):
         title = note.title.lower()
         if title in self.data:
-            raise ValidateException(f"Record with name '{note.title}' already exist.")
+            raise ValidateException(f"Note '{note.title}' already exist.")
         self.data[title] = note
         return True
 

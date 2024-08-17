@@ -62,9 +62,23 @@ class ConsoleTextDesigner:
             color = self.COLUMN_COLORS.get(index, "white")
             table.add_column(column, style=color)
 
-        for item in list_of_dict_to_display:
+        for item in map(self.prepare_row, list_of_dict_to_display):
             row = [str(item.get(column, "")) for column in columns]
             table.add_row(*row)
 
         self.console.print(table)
 
+    def prepare_row(self, item):
+        empty_displayed_value = "<NOT SET>"
+        for key, value in item.items():
+            if value is None:
+                item[key] = empty_displayed_value
+                continue
+            if isinstance(value, list):
+                if len(value) == 0:
+                    item[key] = empty_displayed_value
+                    continue
+                else:
+                    item[key] = ", ".join(value)
+            # TODO: prepare others typs
+        return item
