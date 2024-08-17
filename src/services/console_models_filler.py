@@ -134,7 +134,7 @@ def fill_title():
             designer().print_warning("Title cannot be empty.")
             continue
         if title is not False:
-            return title
+            return title.strip()
         
 def fill_content():
     while True:
