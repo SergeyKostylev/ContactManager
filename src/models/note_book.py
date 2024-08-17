@@ -57,8 +57,17 @@ class Notebook(UserDict):
     
     def find_note_by_keywords(self, keyword: str):
         result = {}
-        # Перебрати всі note і перевірити чи keyword або title, content або хоча б водному з тегів то повертаємо result.values. 
-        # for. якщо є в title, content continue
+        keyword = keyword.lower()
+        for note in self.data.values():
+            title = note.title.lower()
+            content = note.content.lower()
+            if keyword in title or keyword in content:
+                result[note.title] = note
+                continue
+            for tag in [s.lower() for s in note.tags]:
+                if keyword in tag:
+                    result[note.title] = note
+
         return result.values()
     
     @input_error

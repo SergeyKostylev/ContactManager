@@ -23,7 +23,7 @@ class App:
         commands = ["close","exit","hello","add","add_phone","change_phone","delete_phone",
                     "update_address","update_email","add_birthday","show_upcoming_birthday",
                     "all","show_by_name","show_by_part_name", "all_notes",
-                    "add_note", "find_note_by_tag", "delete_note", "remove_contact", "change_content_by_title"]
+                    "add_note", "find_note_by_tag", "delete_note", "remove_contact", "change_content_by_title", "find_note_by_keywords"]
         command_completer = WordCompleter(commands)
         session = PromptSession(completer=command_completer)
         style = Style.from_dict({'prompt': 'ansiblue'})
