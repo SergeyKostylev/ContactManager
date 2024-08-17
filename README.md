@@ -7,7 +7,7 @@
 Щоб встановити проект локально, виконайте наступні кроки:
 1. Клонуйте репозиторій:
 ```
-git clone <URL вашого репозиторію> 
+git clone https://github.com/SergeyKostylev/ContactManager.git
 cd ContactManager
 ```
 2. Створіть та активуйте віртуальне оточення:
