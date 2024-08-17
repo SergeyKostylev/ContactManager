@@ -81,6 +81,15 @@ class Notebook(UserDict):
         return True
 
     @input_error
+    def change_tags_by_title(self, title: str, tags: list):
+        title_key = title.lower()
+        if title_key in self.data:
+            self.data[title_key].tags = tags
+        else:
+            raise ValidateException(f"Note with title '{title}' was not found.")
+        return True
+
+    @input_error
     def delete_by_title(self, title: str):
         title_key = title.lower()
         if title_key in self.data:

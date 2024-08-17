@@ -3,11 +3,13 @@ from src.exeptions.exceptions import ValidateException
 from src.models.address_book import AddressBook
 from src.models.note_book import Notebook
 from src.services.console_models_filler import fill_new_book_record, EMPTY_FIELD_COMMAND, CANCEL_FILLING_COMMAND, \
-    fill_phone_number, fill_user_name, fill_address, fill_email, fill_birthdate, fill_days, fill_note, fill_title, fill_content, fill_tags
+    fill_phone_number, fill_user_name, fill_address, fill_email, fill_birthdate, fill_days, fill_note, fill_title, \
+    fill_content, fill_tags
 from src.services.pretty_output import ConsoleTextDesigner
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style
+
 
 class App:
     def __init__(self):
@@ -20,19 +22,22 @@ class App:
         self.book.load_data()
         self.notebook.load_data()
 
-        commands = ["close","exit","help","add_contact","add_phone_to_contact","change_contact_phone","delete_phone",
-                    "update_address","update_email","add_birthday","find_by_upcoming_birthday",
-                    "find_all_contacts","find_contact_by_name","find_contact_by_part_name", "find_all_notes",
-                    "add_note", "find_note_by_tag", "delete_note", "delete_contact", "change_content_by_title", "find_note_by_keywords"]
+        commands = ["close", "exit", "help", "add_contact", "add_phone_to_contact", "change_contact_phone",
+                    "delete_phone",
+                    "update_address", "update_email", "add_birthday", "find_by_upcoming_birthday",
+                    "find_all_contacts", "find_contact_by_name", "find_contact_by_part_name", "find_all_notes",
+                    "add_note", "find_note_by_tag", "delete_note", "delete_contact", "change_note_content_by_title",
+                    "find_note_by_keywords", "change_note_tags_by_title"]
         command_completer = WordCompleter(commands)
         session = PromptSession(completer=command_completer)
         style = Style.from_dict({'prompt': 'ansiblue'})
         self.__designer.print_info("Welcome to the assistant bot!")
-        self.__designer.print_info("I’m your personal Contact Manager.\nI’ll help you easily create and manage contacts, including names, phone numbers and other details.\nYou can view, search, and edit contacts, add notes and tags.\nType 'help' to view all available commands.")
+        self.__designer.print_info(
+            "I’m your personal Contact Manager.\nI’ll help you easily create and manage contacts, including names, phone numbers and other details.\nYou can view, search, and edit contacts, add notes and tags.\nType 'help' to view all available commands.")
 
         while True:
             try:
-                command = session.prompt('Enter a command: ', style = style)
+                command = session.prompt('Enter a command: ', style=style)
                 output = ''
                 if command in ["close", "exit"]:
                     self.__designer.print_info("Good bye!")
@@ -107,7 +112,7 @@ class App:
                     if note is None:
                         continue
                     self.notebook.add_note(note)
-                    output = "Note was added."   
+                    output = "Note was added."
                 elif command == "find_all_notes":
                     notes = self.notebook.get_all()
                     self.__designer.print_table(self.convert_records_to_dicts(notes))
@@ -127,12 +132,19 @@ class App:
                     title = fill_title()
                     if self.notebook.delete_by_title(title):
                         self.__designer.print_info("Title was deleted")
-                elif command == "change_content_by_title":
+                elif command == "change_note_content_by_title":
                     self.command_control_tip()
                     title = fill_title()
                     content = fill_content()
                     if self.notebook.change_content_by_title(title, content):
-                        self.__designer.print_info("Content was changed")   
+                        self.__designer.print_info("Content was changed")
+
+                elif command == "change_note_tags_by_title":
+                    self.command_control_tip()
+                    title = fill_title()
+                    tags = fill_tags()
+                    if self.notebook.change_tags_by_title(title, tags):
+                        self.__designer.print_info("Tags was changed")
                 else:
                     self.__designer.print_error("Invalid command.")
 
@@ -149,7 +161,8 @@ class App:
                 pass
 
     def command_control_tip(self):
-        self.__designer.print_info(f"Use '{EMPTY_FIELD_COMMAND}' for skip property and '{CANCEL_FILLING_COMMAND}' to cancel command")
+        self.__designer.print_info(
+            f"Use '{EMPTY_FIELD_COMMAND}' for skip property and '{CANCEL_FILLING_COMMAND}' to cancel command")
 
     @staticmethod
     def convert_records_to_dicts(records):
