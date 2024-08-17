@@ -1,4 +1,5 @@
 from src.exeptions.exceptions import CancelInputCommandException
+from src.exeptions.exceptions import ValidateException
 from src.models.address_book import AddressBook
 from src.models.note_book import Note, Notebook
 from src.services.console_models_filler import fill_new_book_record, EMPTY_FIELD_COMMAND, CANCEL_FILLING_COMMAND, \
@@ -21,8 +22,8 @@ class App:
 
         commands = ["close","exit","hello","add","add_phone","change_phone","delete_phone",
                     "update_address","update_email","add_birthday","show_upcoming_birthday",
-                    "all","show_by_name","show_by_part_name","birthdays",
-                    "all_notes", "add_note", "find_note_by_tag", "delete_note", "remove_contact"]
+                    "all","show_by_name","show_by_part_name","all_notes", "add_note",
+                    "find_note_by_tag", "delete_note", "remove_contact"]
         command_completer = WordCompleter(commands)
         session = PromptSession(completer=command_completer)
         style = Style.from_dict({'prompt': 'ansiblue'})
@@ -126,6 +127,9 @@ class App:
 
                 if output != '':
                     self.__designer.print_info(output)
+            
+            except ValidateException as e:
+                self.__designer.print_error(str(e))
 
             except CancelInputCommandException:
                 pass
