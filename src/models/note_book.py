@@ -22,7 +22,7 @@ class Note:
         return {
             "title": self.title,
             "content": self.content,
-            "tags": ", ".join(self.tags)
+            "tags": self.tags
         }
 
 
@@ -38,7 +38,7 @@ class Notebook(UserDict):
     def add_note(self, note: Note):
         title = note.title.lower()
         if title in self.data:
-            raise ValidateException(f"Record with name '{note.title}' already exist.")
+            raise ValidateException(f"Note '{note.title}' already exist.")
         self.data[title] = note
         return True
 
@@ -76,6 +76,15 @@ class Notebook(UserDict):
         title_key = title.lower()
         if title_key in self.data:
             self.data[title_key].content = content
+        else:
+            raise ValidateException(f"Note with title '{title}' was not found.")
+        return True
+
+    @input_error
+    def change_tags_by_title(self, title: str, tags: list):
+        title_key = title.lower()
+        if title_key in self.data:
+            self.data[title_key].tags = tags
         else:
             raise ValidateException(f"Note with title '{title}' was not found.")
         return True
