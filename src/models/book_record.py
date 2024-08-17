@@ -1,6 +1,5 @@
 class BookRecord:
 
-
     def __init__(self, name: str, email=None, phone_numbers=None, address=None, birth_date=None):
         self.__name = name
         self.__email = email

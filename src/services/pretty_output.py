@@ -49,7 +49,6 @@ class ConsoleTextDesigner:
     def print_result(self, message: str):
         self.print_with_color(message, "bold blue")
 
-
     def print_table(self, list_of_dict_to_display, displayed_columns=None):
         table = Table(show_header=True, header_style="bold magenta", title_justify="center")
 

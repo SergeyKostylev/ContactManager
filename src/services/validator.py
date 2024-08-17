@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 DATE_FORMAT = '%d.%m.%Y'
 
+
 def validate_email(email: str) -> bool:
     email_regex = r"(^[\w\.-]+@[\w\.-]+\.\w+$)"
     return re.match(email_regex, email) is not None
@@ -22,13 +23,15 @@ def validate_user_name(user_name: str) -> bool:
     username_regex = r"^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:['\-\s][A-Za-zÀ-ÖØ-öø-ÿ]+)*$"
     return re.match(username_regex, user_name) is not None
 
+
 def validate_note_title(title: str) -> bool:
     length = len(title.strip())
-    return length >= 3 and length <=10
+    return length >= 3 and length <= 10
+
 
 def validate_note_content(content: str) -> bool:
     length = len(content.strip())
-    return length >= 5 and length <=20
+    return length >= 5 and length <= 20
 
 
 def validate_strings_with_tags(strings_with_tags: str):
@@ -37,11 +40,10 @@ def validate_strings_with_tags(strings_with_tags: str):
     return length > 0
 
 
-
-
 def validate_shift_days(shift_days: str) -> bool:
     reg = r"^\d+$"
     return re.match(reg, shift_days) is not None
+
 
 def validate_birthday(birthday: str) -> bool:
     try:

@@ -9,6 +9,7 @@ from src.models.note_book import Note
 EMPTY_FIELD_COMMAND = 'n'
 CANCEL_FILLING_COMMAND = 'cancel'
 
+
 @input_error
 def fill_new_book_record():
     properties = [
@@ -50,6 +51,7 @@ def fill_new_book_record():
 
     return BookRecord(name, email, phone_numbers, address, birthdate)
 
+
 @input_error
 def fill_note():
     properties = [
@@ -79,12 +81,11 @@ def fill_note():
                     raise ValidateException('Content cannot be empty.')
             case "tags":
                 tags = fill_tags()
-    
 
         properties.pop(0)
 
     return Note(title, content, tags)
-    
+
 
 def fill_days():
     while True:
@@ -92,17 +93,20 @@ def fill_days():
         if days is not False:
             return int(days)
 
+
 def fill_birthdate():
     while True:
         birthday = input_data(f"Print birthdate with format d.m.y: ", validate_birthday, "Birthdate is not valid.")
         if birthday is not False:
             return birthday
 
+
 def fill_address():
     while True:
         address = input_data(f"Print address: ", validate_address, "Address is not valid.")
         if address is not False:
             return address
+
 
 def fill_email():
     while True:
@@ -126,38 +130,42 @@ def fill_user_name():
             continue
         if name is not False:
             return name
-        
+
+
 def fill_title():
     while True:
-        title = input_data("Print title: ", validate_note_title, "Title must be more than 3 and less than 10 characters.")
+        title = input_data("Print title: ", validate_note_title,
+                           "Title must be more than 3 and less than 10 characters.")
         if title is None:
             designer().print_warning("Title cannot be empty.")
             continue
         if title is not False:
             return title.strip()
-        
+
+
 def fill_content():
     while True:
-        content = input_data("Print content: ", validate_note_content, "Content must be more than 5 and less than 20 characters.")
+        content = input_data("Print content: ", validate_note_content,
+                             "Content must be more than 5 and less than 20 characters.")
         if content is None:
             designer().print_warning("Content cannot be empty.")
             continue
         if content is not False:
             return content
-        
+
+
 def fill_tags():
     while True:
-       strings_with_tags = input_data("Print tags(separated by space): ", validate_strings_with_tags, "Tags must not be empty") 
-       if strings_with_tags is None:
+        strings_with_tags = input_data("Print tags(separated by space): ", validate_strings_with_tags,
+                                       "Tags must not be empty")
+        if strings_with_tags is None:
             return []
-       if strings_with_tags is not False:
+        if strings_with_tags is not False:
             result = []
             for tag_candidate in strings_with_tags.split(" "):
                 if len(tag_candidate) > 0:
                     result.append(tag_candidate.strip().lower())
             return list(set(result))
-
-
 
 
 def input_data(input_message: str, validate_function, wrong_message) -> str | None | bool:
