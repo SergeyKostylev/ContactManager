@@ -57,7 +57,10 @@ class Notebook(UserDict):
     
     def find_note_by_keywords(self, keyword: str):
         result = {}
-        keyword = keyword.lower()
+        keyword = keyword.lower().strip()
+        if keyword == '':
+            return []
+
         for note in self.data.values():
             title = note.title.lower()
             content = note.content.lower()
