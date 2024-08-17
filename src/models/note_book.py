@@ -35,17 +35,15 @@ class Notebook(UserDict):
         """Get all records in dictionary format."""
         return self.data.values()
 
-
     def add_note(self, note: Note):
+        title = note.title.lower()
         if note.title in self.data:
             raise ValidateException(f"Record with name '{note.title}' already exist.")
-        self.data[note.title] = note
+        self.data[title] = note
         return True
-    
 
     def find_note_by_title(self, title: str) -> Note:
-        return self.data.get(title)
-
+        return self.data.get(title.lower())
 
     def find_note_by_tags(self, tags_to_search: list):
         result = {}
@@ -54,7 +52,7 @@ class Notebook(UserDict):
                 if tag in note.tags:
                     result[note.title] = note
         return result.values()
-    
+
     def find_note_by_keywords(self, keyword: str):
         result = {}
         keyword = keyword.lower().strip()
@@ -72,48 +70,27 @@ class Notebook(UserDict):
                     result[note.title] = note
 
         return result.values()
-    
+
     @input_error
     def change_content_by_title(self, title: str, content: str):
-        if title in self.data:
-            self.data[title].content = content
+        title_key = title.lower()
+        if title_key in self.data:
+            self.data[title_key].content = content
         else:
             raise ValidateException(f"Note with title '{title}' was not found.")
         return True
-        
 
     @input_error
     def delete_by_title(self, title: str):
-        if title in self.data:
-            self.data.pop(title)
+        title_key = title.lower()
+        if title_key in self.data:
+            self.data.pop(title_key)
         else:
             raise ValidateException(f"Note with title '{title}' was not found.")
         return True
-
 
     def load_data(self):
         storage_manager.load(self, self.STORAGE_FILE_NAME)
 
     def save_data(self):
         storage_manager.save(self.data, self.STORAGE_FILE_NAME)
-
-
-def add_note(args, notebook: Notebook):
-    title, content, *tags = args
-    note = Note(title, content, tags)
-    notebook.add_note(note)
-    return "Note added."
-
-
-def delete_note(args, notebook: Notebook):
-    title, *_ = args
-    notebook.delete_by_title(title)
-    return "Note deleted."
-
-
-def find_note_by_tag(args, notebook: Notebook):
-    tag, *_ = args
-    notes = notebook.find_note_by_tag(tag)
-    if not notes:
-        return "No notes with such tag."
-    return "\n".join(str(note) for note in notes)
