@@ -2,7 +2,7 @@ from src.exeptions.exceptions import ValidateException, CancelInputCommandExcept
 from src.models.book_record import BookRecord
 from src.services.error_handler import input_error
 from src.services.validator import validate_user_name, validate_phone_number, validate_email, validate_address, \
-    validate_birthday
+    validate_birthday, validate_shift_days
 from src.services.pretty_output import ConsoleTextDesigner as designer
 
 EMPTY_FIELD_COMMAND = 'n'
@@ -49,6 +49,11 @@ def fill_new_book_record():
 
     return BookRecord(name, email, phone_numbers, address, birthdate)
 
+def fill_days():
+    while True:
+        days = input_data(f"Enter the number of days: ", validate_shift_days, "Days must be a positive integer.")
+        if days is not False:
+            return int(days)
 
 def fill_birthdate():
     while True:

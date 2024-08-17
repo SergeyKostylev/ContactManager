@@ -23,6 +23,10 @@ def validate_user_name(user_name: str) -> bool:
     return re.match(username_regex, user_name) is not None
 
 
+def validate_shift_days(shift_days: str) -> bool:
+    reg = r"^\d+$"
+    return re.match(reg, shift_days) is not None
+
 def validate_birthday(birthday: str) -> bool:
     try:
         birthday_date = datetime.strptime(birthday, DATE_FORMAT)
