@@ -3,7 +3,6 @@ from collections import UserDict
 from src.exeptions.exceptions import ValidateException
 from src.models.book_record import BookRecord
 from datetime import datetime
-import pickle
 from src.services import storage_manager
 
 from src.services.error_handler import input_error
@@ -13,7 +12,7 @@ class AddressBook(UserDict):
     STORAGE_FILE_NAME = "addressbook.pkl"
 
     def get_all(self) -> dict[BookRecord, BookRecord]:
-        """Get all records in dictionary format."""
+        """Get all records."""
         return self.data.values()
 
     def get_by_name(self, name: str) -> dict[BookRecord] | None:
