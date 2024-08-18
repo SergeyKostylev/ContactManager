@@ -75,3 +75,12 @@ delete_note: Видалити нотатку.
 ## Додаткова інформація
 
 Проект підтримує збереження даних контактів та нотаток у файли (`addressbook.pkl` і `notebook.pkl`), щоб дані не губилися після закриття програми. Всі зміни автоматично зберігаються при виході з програми.
+
+### Учасники
+
+Дякуємо всім, хто зробив внесок у цей проект:
+- [Sergey Kostylev](https://github.com/SergeyKostylev)
+- [Denys Rudenko](https://github.com/DenysRudenko2)
+- [Volodymyr Sydorenko](https://github.com/QA-Droid)
+- [Nazar Golota](https://github.com/NutSheLL1337)
+- [Vadim Dmytrenko](https://github.com/luxeon936)
