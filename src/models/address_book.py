@@ -15,10 +15,12 @@ class AddressBook(UserDict):
         """Get all records."""
         return self.data.values()
 
+    @input_error
     def get_by_name(self, name: str) -> dict[BookRecord] | None:
         """Get a record by exact name or return None if not found."""
         return self.data.get(name)
 
+    @input_error
     def get_by_part_name(self, part_name: str) -> list[BookRecord]:
         """Get records that contain part of the name."""
         return [record for name, record in self.data.items() if part_name.lower() in name.lower()]
@@ -48,6 +50,7 @@ class AddressBook(UserDict):
             return True
         return False
 
+    @input_error
     def get_upcoming_birthdays(self, days: int) -> list[BookRecord]:
         """Method to get upcoming birthdays"""
         today = datetime.now().date()
@@ -114,6 +117,7 @@ class AddressBook(UserDict):
         record.email = email
         return True
 
+    @input_error
     def add_birthday(self, name: str, birthday: str) -> bool:
         """Add a birthday to a contact."""
         record = self.get_by_name(name)

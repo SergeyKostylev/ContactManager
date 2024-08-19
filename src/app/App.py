@@ -154,9 +154,6 @@ class App:
                 self.book.save_data()
                 self.notebook.save_data()
 
-            except ValidateException as e:
-                self.__designer.print_error(str(e))
-
             except CancelInputCommandException:
                 pass
 

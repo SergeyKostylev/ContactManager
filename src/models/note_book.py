@@ -35,6 +35,7 @@ class Notebook(UserDict):
         """Get all records in dictionary format."""
         return self.data.values()
 
+    @input_error
     def add_note(self, note: Note):
         title = note.title.lower()
         if title in self.data:
@@ -42,6 +43,7 @@ class Notebook(UserDict):
         self.data[title] = note
         return True
 
+    @input_error
     def find_note_by_title(self, title: str) -> Note:
         return self.data.get(title.lower())
 
